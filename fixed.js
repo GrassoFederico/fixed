@@ -21,7 +21,6 @@ $( window ).resize(function() {
 });
 
 $(window).scroll(function(){
-	console.log(($("#banner").offset().top + $("#banner").height()) + " " + $("#comments").offset().top);
 	if($(this).scrollTop() < finalOffset)
 	{
 		if($(this).scrollTop() > originOffset)
