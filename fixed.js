@@ -3,9 +3,21 @@ var finalOffset = 0;
 var originOffset = 0;
 var limitOffset = 0;
 
-$(window).ready(function(){
+function reset()
+{
+	$("#banner").css("marginTop",0);
+	offset = 15;
+	finalOffset = 0;
 	originOffset = $("#banner").offset().top;
 	limitOffset = $("#comments").offset().top;
+}
+
+$(window).ready(function(){
+	reset();
+});
+
+$( window ).resize(function() {
+	reset();
 });
 
 $(window).scroll(function(){
