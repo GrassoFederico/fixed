@@ -1,51 +1,53 @@
-var offset = 15;
-var finalOffset = 0;
-var originOffset = 0;
-var limitOffset = 0;
-var newPos = null;
-var lastPos = null;
-var delta = 0;
-var istVelocity = 0;
+var position, bannerPosition, limitPosition, velocity;
+var scrollDirection = Object.freeze({"none":0, "down":1, "up":2})
 
-function reset()
+function resetPositionElements()
 {
-	$("#banner").css("marginTop",0);
-	offset = 15;
-	finalOffset = 0;
-	originOffset = $("#banner").offset().top;
-	limitOffset = $("#comments").offset().top;
+	bannerPosition = $("#banner").offset().top;
+	limitPosition = $("#limit").offset().top;
 }
 
-function mouseVelocity()
+function getVelocity()
 {
-	newPos = window.scrollY;
-	delta = newPos -  lastPos;
-	lastPos = newPos;
-	return(Math.abs(delta));
+	return($(window).scrollTop() - position);
+}
+
+function isScrolling()
+{
+	velocity = getVelocity();
+	position = $(window).scrollTop();
+	if(velocity > 0)
+		return(scrollDirection.down);
+	if(velocity < 0)
+		return(scrollDirection.up);
+	if(velocity == 0)
+		return(scrollDirection.none);
+}
+
+function bannerScroll()
+{
+	if(position <= bannerPosition)
+	{
+		$("#banner").css("marginTop",0);
+	}
+	if(position > bannerPosition)
+	{
+		if(position <= (limitPosition-$("#banner").height()))
+			$("#banner").css("marginTop",(position-bannerPosition)+"px");
+	}
 }
 
 $(window).ready(function(){
-	reset();
+	resetPositionElements();
+	position = $(window).scrollTop();
+	velocity = 0;
 });
 
 $( window ).resize(function() {
-	reset();
+	resetPositionElements();
 });
 
 $(window).scroll(function(){
-	istVelocity = mouseVelocity();
-	if($(this).scrollTop() < finalOffset)
-	{
-		if($(this).scrollTop() > originOffset)
-			offset -= istVelocity;
-		else
-			offset = 0;
-	}
-	if($(this).scrollTop() > $("#banner").offset().top)
-	{
-		if((($("#banner").offset().top + istVelocity) + $("#banner").height()) < limitOffset)
-			offset += istVelocity;
-		finalOffset = $("#banner").offset().top;
-	}
-	$("#banner").css("marginTop",offset + "px");
+	isScrolling();
+	bannerScroll();
 });
