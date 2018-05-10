@@ -5,7 +5,7 @@ var scrollDirection = Object.freeze({"none":0, "down":1, "up":2})
 
 function resetPositionElements()
 {
-	bannerPosition = $("#banner").offset().top;
+	bannerPosition = $("#b").offset().top;
 	limitPosition = $("#limit").offset().top;
 	position = $(this).scrollTop();
 }
@@ -31,21 +31,21 @@ function bannerScroll()
 {
 	if(position <= bannerPosition)
 	{
-		$("#banner").css("marginTop",0);
+		$("#b").css("marginTop",0);
 	}
 	if(position > bannerPosition)
 	{
-		if(position < (limitPosition-$("#banner").height()))
-			$("#banner").css("marginTop",(position-bannerPosition)+"px");
+		if(position < (limitPosition-$("#b").height()))
+			$("#b").css("marginTop",(position-bannerPosition)+"px");
 	}
 }
 
 function matchSize(responsive) 
 {
 	if(responsive.matches)
-		$("#banner").hide();
+		$("#b").hide();
 	else
-		$("#banner").show();
+		$("#b").show();
 }
 
 $(window).ready(function(){
