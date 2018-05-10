@@ -1,12 +1,13 @@
-var position, bannerPosition, limitPosition, velocity, executed = false;
+var position, bannerPosition, limitPosition, velocity;
+var MAX_WIDTH = 1024;
+var responsive = window.matchMedia("(max-width: " + MAX_WIDTH + "px)")
 var scrollDirection = Object.freeze({"none":0, "down":1, "up":2})
 
 function resetPositionElements()
 {
 	bannerPosition = $("#banner").offset().top;
 	limitPosition = $("#limit").offset().top;
-	if(!executed)
-		executed = true;
+	position = $(this).scrollTop();
 }
 
 function getVelocity()
@@ -39,15 +40,21 @@ function bannerScroll()
 	}
 }
 
+function matchSize(responsive) 
+{
+	if(responsive.matches)
+		$("#banner").hide();
+	else
+		$("#banner").show();
+}
+
 $(window).ready(function(){
-	if(!executed)
-		resetPositionElements();	
-	position = $(this).scrollTop();
-	velocity = 0;
+	resetPositionElements();	
 });
 
 $(window).resize(function(){
-	resetPositionElements();
+	matchSize(responsive);
+	responsive.addListener(matchSize);	
 });
 
 $(window).scroll(function(){
