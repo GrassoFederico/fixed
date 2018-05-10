@@ -1,10 +1,12 @@
-var position, bannerPosition, limitPosition, velocity;
+var position, bannerPosition, limitPosition, velocity, executed = false;
 var scrollDirection = Object.freeze({"none":0, "down":1, "up":2})
 
 function resetPositionElements()
 {
 	bannerPosition = $("#banner").offset().top;
 	limitPosition = $("#limit").offset().top;
+	if(!executed)
+		executed = true;
 }
 
 function getVelocity()
@@ -38,13 +40,14 @@ function bannerScroll()
 }
 
 $(window).ready(function(){
-	resetPositionElements();
+	if(!executed)
+		resetPositionElements();	
+	position = $(this).scrollTop();
 	velocity = 0;
 });
 
 $(window).resize(function(){
 	resetPositionElements();
-	$("#banner").css("marginTop",0);
 });
 
 $(window).scroll(function(){
