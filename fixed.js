@@ -32,19 +32,19 @@ function bannerScroll()
 	}
 	if(position > bannerPosition)
 	{
-		if(position <= (limitPosition-$("#banner").height()))
+		if(position < (limitPosition-$("#banner").height()))
 			$("#banner").css("marginTop",(position-bannerPosition)+"px");
 	}
 }
 
 $(window).ready(function(){
 	resetPositionElements();
-	position = $(window).scrollTop();
 	velocity = 0;
 });
 
-$( window ).resize(function() {
+$(window).resize(function(){
 	resetPositionElements();
+	$("#banner").css("marginTop",0);
 });
 
 $(window).scroll(function(){
