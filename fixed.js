@@ -4,7 +4,7 @@ var responsive = window.matchMedia("(max-width: " + MAX_WIDTH + "px)");
 
 function getPosition()
 {
-	return($(this).scrollTop());
+	return($(document).scrollTop());
 }
 
 function reset()
@@ -38,6 +38,7 @@ function matchSize(responsive)
 }
 
 $(document).ready(function(){
+	$(this).scrollTop(0);
 	matchSize(responsive);
 	responsive.addListener(matchSize);
 	reset();
