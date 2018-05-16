@@ -1,63 +1,44 @@
-var position, bannerPosition, limitPosition, velocity;
+var position, bannerPosition, limitPosition, bannerHeight;
 var MAX_WIDTH = 1024;
-var responsive = window.matchMedia("(max-width: " + MAX_WIDTH + "px)")
-var scrollDirection = Object.freeze({"none":0, "down":1, "up":2})
+var responsive = window.matchMedia("(max-width: " + MAX_WIDTH + "px)");
 
-function resetPositionElements()
+function getPosition()
 {
-	bannerPosition = $("#b").offset().top;
+	return($(this).scrollTop());
+}
+
+function reset()
+{
+	position = getPosition();
+	bannerHeight = $("#banner").height();
+	bannerPosition = $("#banner").offset().top;
 	limitPosition = $("#limit").offset().top;
-	position = $(this).scrollTop();
 }
 
-function getVelocity()
+function checkPosition()
 {
-	return($(window).scrollTop() - position);
-}
-
-function isScrolling()
-{
-	velocity = getVelocity();
-	position = $(window).scrollTop();
-	if(velocity > 0)
-		return(scrollDirection.down);
-	if(velocity < 0)
-		return(scrollDirection.up);
-	if(velocity == 0)
-		return(scrollDirection.none);
-}
-
-function bannerScroll()
-{
-	if(position <= bannerPosition)
+	position = getPosition();
+	if((position + bannerHeight) < limitPosition)
 	{
-		$("#b").css("marginTop",0);
-	}
-	if(position > bannerPosition)
-	{
-		if(position < (limitPosition-$("#b").height()))
-			$("#b").css("marginTop",(position-bannerPosition)+"px");
+		if(position > bannerPosition)
+			$("#banner").css("marginTop", (position - bannerPosition) + "px");
 	}
 }
 
 function matchSize(responsive) 
 {
 	if(responsive.matches)
-		$("#b").hide();
+		$("#banner").hide();
 	else
-		$("#b").show();
+		$("#banner").show();
 }
 
 $(window).ready(function(){
-	resetPositionElements();	
-});
-
-$(window).resize(function(){
 	matchSize(responsive);
-	responsive.addListener(matchSize);	
+	responsive.addListener(matchSize);
+	reset();
 });
 
 $(window).scroll(function(){
-	isScrolling();
-	bannerScroll();
+	checkPosition();
 });
