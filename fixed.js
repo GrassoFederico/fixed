@@ -10,6 +10,7 @@ function getPosition()
 function reset()
 {
 	position = getPosition();
+	$("#banner").css("marginTop", "0px");
 	bannerHeight = $("#banner").height();
 	bannerPosition = $("#banner").offset().top;
 	limitPosition = $("#limit").offset().top;
@@ -22,6 +23,8 @@ function checkPosition()
 	{
 		if(position > bannerPosition)
 			$("#banner").css("marginTop", (position - bannerPosition) + "px");
+		else
+			reset();
 	}
 }
 
@@ -31,9 +34,10 @@ function matchSize(responsive)
 		$("#banner").hide();
 	else
 		$("#banner").show();
+	reset();
 }
 
-$(window).ready(function(){
+$(document).ready(function(){
 	matchSize(responsive);
 	responsive.addListener(matchSize);
 	reset();
